@@ -1,0 +1,369 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+  SORCERER — original dark-fantasy gamified fitness theme.
+  Nocturnal, occult-academy, high-contrast, cinematic.
+*/
+
+@theme inline {
+  --font-heading: var(--font-space-grotesk), 'Space Grotesk Fallback';
+  --font-sans: var(--font-inter), 'Inter Fallback';
+  --font-mono: var(--font-geist-mono), 'Geist Mono Fallback';
+  --font-cinzel: var(--font-cinzel), 'Cinzel', serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  /* Named brand tokens */
+  --color-ce: var(--ce);
+  --color-ce-2: var(--ce-2);
+  --color-crimson: var(--crimson);
+  --color-jade: var(--jade);
+  --color-gold: var(--gold);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+}
+
+:root {
+  color-scheme: dark;
+
+  --background: #090d12;
+  --foreground: #f4f8fb;
+  --surface: #0f1720;
+  --surface-2: #14202c;
+
+  --card: #0f1720;
+  --card-foreground: #f4f8fb;
+  --popover: #14202c;
+  --popover-foreground: #f4f8fb;
+
+  --primary: #06b6d4;
+  --primary-foreground: #090d12;
+  --secondary: #14202c;
+  --secondary-foreground: #f4f8fb;
+  --muted: #14202c;
+  --muted-foreground: #7dd3fc;
+  --accent: #00f0ff;
+  --accent-foreground: #090d12;
+  --destructive: #e4283c;
+  --destructive-foreground: #f4f8fb;
+
+  --ce: #00f0ff;
+  --ce-2: #0284c7;
+  --crimson: #e4283c;
+  --jade: #2ed9a8;
+  --gold: #22d3ee;
+
+  --border: #1e293b;
+  --input: #1e293b;
+  --ring: #00f0ff;
+
+  --chart-1: #00f0ff;
+  --chart-2: #0284c7;
+  --chart-3: #2ed9a8;
+  --chart-4: #38bdf8;
+  --chart-5: #e4283c;
+
+  --radius: 0.75rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    @apply font-sans;
+    background-color: var(--background);
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    @apply bg-background text-foreground;
+    overscroll-behavior-y: none;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    @apply font-heading;
+  }
+  /* Hide scrollbars on horizontal quest rails while keeping scroll */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@layer utilities {
+  /* Cursed-energy gradient text */
+  .text-ce-gradient {
+    background: linear-gradient(135deg, #00f0ff 0%, #0284c7 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  /* Soft electric cyan glow used on active / hoverable cards */
+  .glow-ce {
+    box-shadow: 0 0 0 1px rgba(0, 240, 255, 0.35),
+      0 0 24px -4px rgba(0, 240, 255, 0.45);
+  }
+  .glow-ce-strong {
+    box-shadow: 0 0 0 1px rgba(0, 240, 255, 0.6),
+      0 0 40px -2px rgba(0, 240, 255, 0.65);
+  }
+  .glow-gold {
+    box-shadow: 0 0 0 1px rgba(212, 175, 106, 0.4),
+      0 0 32px -4px rgba(212, 175, 106, 0.45);
+  }
+  .glow-crimson {
+    box-shadow: 0 0 0 1px rgba(228, 40, 60, 0.4),
+      0 0 32px -4px rgba(228, 40, 60, 0.45);
+  }
+  /* Talisman-strip cut corner */
+  .clip-talisman {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%);
+  }
+  /* Shimmer sweep for progress bars */
+  .shimmer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      100deg,
+      transparent 20%,
+      rgba(244, 243, 247, 0.35) 50%,
+      transparent 80%
+    );
+    transform: translateX(-100%);
+    animation: shimmer-sweep 2.4s ease-in-out infinite;
+  }
+  @keyframes shimmer-sweep {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+  @keyframes ce-pulse {
+    0%,
+    100% {
+      opacity: 0.55;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.06);
+    }
+  }
+  .animate-ce-pulse {
+    animation: ce-pulse 3s ease-in-out infinite;
+  }
+  @keyframes float-up {
+    0% {
+      transform: translateY(0);
+      opacity: 0;
+    }
+    15% {
+      opacity: 0.5;
+    }
+    100% {
+      transform: translateY(-120px);
+      opacity: 0;
+    }
+  }
+
+  /* Typewriter cursor blink */
+  @keyframes cursor-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+  .animate-cursor-blink {
+    animation: cursor-blink 1s step-end infinite;
+  }
+
+  .sorcerer-title-glow {
+    font-family: var(--font-cinzel), 'Cinzel', serif;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    color: #ffffff;
+    text-shadow:
+      0 0 10px rgba(0, 240, 255, 0.95),
+      0 0 24px rgba(0, 240, 255, 0.85),
+      0 0 48px rgba(2, 132, 199, 0.9);
+  }
+
+  /* Hold-to-confirm ring fill */
+  @keyframes ring-fill {
+    0% { stroke-dashoffset: 283; }
+    100% { stroke-dashoffset: 0; }
+  }
+  .animate-ring-fill {
+    animation: ring-fill 2s linear forwards;
+  }
+
+  /* Fingerprint pulse */
+  @keyframes fingerprint-pulse {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.08); }
+  }
+  .animate-fingerprint-pulse {
+    animation: fingerprint-pulse 2s ease-in-out infinite;
+  }
+
+  /* Progress count up shimmer */
+  @keyframes count-glow {
+    0% { text-shadow: 0 0 20px rgba(0,240,255,0.3); }
+    50% { text-shadow: 0 0 40px rgba(0,240,255,0.85); }
+    100% { text-shadow: 0 0 20px rgba(0,240,255,0.3); }
+  }
+  .animate-count-glow {
+    animation: count-glow 2s ease-in-out infinite;
+  }
+
+  /* Warning gradient backgrounds */
+  .bg-warning-crimson {
+    background: linear-gradient(180deg, #1a0608 0%, #2a0a10 40%, #090d12 100%);
+  }
+  .bg-warning-violet {
+    background: linear-gradient(180deg, #051923 0%, #0c364a 40%, #090d12 100%);
+  }
+  .bg-warning-blue {
+    background: linear-gradient(180deg, #051622 0%, #0a2e45 40%, #090d12 100%);
+  }
+
+  /* Scroll picker styling */
+  .scroll-picker {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    scroll-snap-type: y mandatory;
+  }
+  .scroll-picker::-webkit-scrollbar {
+    display: none;
+  }
+  .scroll-picker-item {
+    scroll-snap-align: center;
+  }
+
+  /* Silhouette glow for hero */
+  .silhouette-glow {
+    background: radial-gradient(
+      ellipse 50% 60% at 50% 40%,
+      rgba(0, 240, 255, 0.28) 0%,
+      rgba(2, 132, 199, 0.12) 40%,
+      transparent 70%
+    );
+  }
+
+  /* Notification glass panel */
+  .glass-panel {
+    background: rgba(15, 23, 32, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 240, 255, 0.25);
+  }
+
+  /* ── LOCK IN SCREEN ANIMATIONS ─────────────────────────────── */
+
+  /* Ken Burns slow zoom + drift */
+  @keyframes ken-burns {
+    0%   { transform: scale(1)    translate(0px, 0px); }
+    25%  { transform: scale(1.06) translate(-8px, -4px); }
+    50%  { transform: scale(1.10) translate(4px, -8px); }
+    75%  { transform: scale(1.07) translate(-4px, 4px); }
+    100% { transform: scale(1)    translate(0px, 0px); }
+  }
+  .animate-ken-burns {
+    animation: ken-burns 18s ease-in-out infinite;
+    transform-origin: center center;
+  }
+
+  /* Red energy blob pulse (Sukuna side) */
+  @keyframes red-energy {
+    0%, 100% { opacity: 0.22; transform: scale(1) translate(0, 0); }
+    33%       { opacity: 0.38; transform: scale(1.15) translate(-6%, 3%); }
+    66%       { opacity: 0.28; transform: scale(0.92) translate(4%, -4%); }
+  }
+  .animate-red-energy {
+    animation: red-energy 6s ease-in-out infinite;
+  }
+
+  /* Blue energy blob pulse (Gojo side) */
+  @keyframes blue-energy {
+    0%, 100% { opacity: 0.22; transform: scale(1) translate(0, 0); }
+    33%       { opacity: 0.35; transform: scale(1.12) translate(5%, -3%); }
+    66%       { opacity: 0.28; transform: scale(0.94) translate(-3%, 5%); }
+  }
+  .animate-blue-energy {
+    animation: blue-energy 7s ease-in-out infinite;
+    animation-delay: -2s;
+  }
+
+  /* Floating spark particles */
+  @keyframes float-spark {
+    0%   { opacity: 0; transform: translateY(0px) translateX(0px) scale(0); }
+    15%  { opacity: 1; transform: translateY(-20px) translateX(5px) scale(1); }
+    85%  { opacity: 0.7; transform: translateY(-80px) translateX(-8px) scale(0.7); }
+    100% { opacity: 0; transform: translateY(-110px) translateX(3px) scale(0); }
+  }
+  .animate-spark-1 { animation: float-spark 3.2s ease-in-out infinite; animation-delay: 0s; }
+  .animate-spark-2 { animation: float-spark 3.2s ease-in-out infinite; animation-delay: 0.6s; }
+  .animate-spark-3 { animation: float-spark 3.2s ease-in-out infinite; animation-delay: 1.2s; }
+  .animate-spark-4 { animation: float-spark 3.2s ease-in-out infinite; animation-delay: 1.8s; }
+  .animate-spark-5 { animation: float-spark 3.2s ease-in-out infinite; animation-delay: 2.4s; }
+
+  /* Scanline flicker */
+  @keyframes scanline {
+    0%   { transform: translateY(-100%); }
+    100% { transform: translateY(100vh); }
+  }
+  .animate-scanline {
+    animation: scanline 6s linear infinite;
+    opacity: 0.04;
+  }
+
+  /* Border glow pulse */
+  @keyframes border-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(0, 240, 255, 0); }
+    50%       { box-shadow: 0 0 30px 4px rgba(0, 240, 255, 0.4); }
+  }
+  .animate-border-pulse {
+    animation: border-pulse 3s ease-in-out infinite;
+  }
+}
