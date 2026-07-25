@@ -57,7 +57,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     }
 
-    fetch('/api/auth/session')
+    fetch('/api/auth/session', { cache: 'no-store' })
       .then((res) => res.json())
       .then((data) => {
         if (data.authenticated && data.user) {

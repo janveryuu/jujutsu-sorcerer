@@ -215,7 +215,7 @@ export function SorcererProvider({ children }: { children: ReactNode }) {
     }
 
     // Fetch authoritative state from backend API
-    fetch('/api/sorcerer/state')
+    fetch('/api/sorcerer/state', { cache: 'no-store' })
       .then((res) => res.json())
       .then((data) => {
         if (data.success && data.state) {

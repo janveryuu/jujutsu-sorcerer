@@ -3,6 +3,8 @@ import { cookies } from 'next/headers'
 import { SorcererStore } from '@/lib/backend/store'
 import { userStore } from '@/lib/auth'
 
+export const dynamic = 'force-dynamic'
+
 async function getAuthUserId(): Promise<string> {
   try {
     const cookieStore = await cookies()
