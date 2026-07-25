@@ -10,7 +10,9 @@ import {
   Gauge,
   Globe,
   Heart,
+  LogIn,
   LogOut,
+  Mail,
   Moon,
   Ruler,
   Scale,
@@ -31,6 +33,7 @@ import {
   YAxis,
 } from 'recharts'
 import { useSorcerer } from '@/components/sorcerer-provider'
+import { useAuth } from '@/components/auth-provider'
 import { CursedEnergyBg } from '@/components/cursed-energy-bg'
 import {
   EnergyBar,
@@ -43,6 +46,17 @@ import {
 } from '@/components/sorcerer-ui'
 import { AURAS, GRADES } from '@/lib/sorcerer-data'
 import { cn } from '@/lib/utils'
+
+import {
+  SpecialGradeModal,
+  EditProfileModal,
+  IntegrationsModal,
+  AppearanceModal,
+  PrivacyPolicyModal,
+  TermsOfServiceModal,
+  SignOutModal,
+  ToastNotification,
+} from '@/components/profile-modals'
 
 /* ------------------------------------------------------------------ */
 /* Toggle switch component                                             */
@@ -197,18 +211,50 @@ function WeightTrendChart({ data }: { data: { date: string; weight: number }[] }
   )
 }
 
+type ModalType =
+  | 'specialGrade'
+  | 'editProfile'
+  | 'integrations'
+  | 'appearance'
+  | 'privacy'
+  | 'terms'
+  | 'signOut'
+  | null
+
 /* ------------------------------------------------------------------ */
 /* Main Profile Screen                                                 */
 /* ------------------------------------------------------------------ */
 export function ProfileScreen() {
-  const { state } = useSorcerer()
+  const { state, updateState } = useSorcerer()
+  const { user, openAuthModal, logout } = useAuth()
   const grade = GRADES[state.grade]
   const tone = gradeToneByIndex(state.grade)
   const aura = AURAS.find((a) => a.key === state.aura) ?? AURAS[0]
 
-  // Settings state (local UI only)
-  const [notifications, setNotifications] = useState(true)
-  const [units, setUnits] = useState<'metric' | 'imperial'>('metric')
+  // Settings state & modal management
+  const [activeModal, setActiveModal] = useState<ModalType>(null)
+  const [toastMsg, setToastMsg] = useState<string | null>(null)
+
+  const notifications = state.reminderEnabled ?? true
+  const units = state.units ?? 'metric'
+
+  const showToast = (msg: string) => {
+    setToastMsg(msg)
+    setTimeout(() => {
+      setToastMsg((current) => (current === msg ? null : current))
+    }, 3500)
+  }
+
+  const handleToggleNotifications = (val: boolean) => {
+    updateState({ reminderEnabled: val })
+    showToast(val ? 'Notifications Enabled' : 'Notifications Disabled')
+  }
+
+  const handleToggleUnits = () => {
+    const nextUnits = units === 'metric' ? 'imperial' : 'metric'
+    updateState({ units: nextUnits })
+    showToast(nextUnits === 'metric' ? 'Units changed to Metric (kg, cm)' : 'Units changed to Imperial (lbs, in)')
+  }
 
   const statItems = [
     { icon: Zap, label: 'Total Cursed Energy', value: state.totalCe.toLocaleString(), color: 'text-ce' },
@@ -220,6 +266,10 @@ export function ProfileScreen() {
   return (
     <div className="relative">
       <CursedEnergyBg density={10} className="opacity-40" />
+
+      {/* Floating Toast Notification */}
+      <ToastNotification message={toastMsg} onClose={() => setToastMsg(null)} />
+
       <div className="relative space-y-6 px-4 pb-28 pt-6">
         {/* Header */}
         <header className="space-y-1">
@@ -285,8 +335,24 @@ export function ProfileScreen() {
           <div className="px-5 pb-5 pt-14">
             <div className="flex items-start justify-between">
               <div>
-                <h2 className="font-heading text-xl font-bold">{state.name}</h2>
-                <p className="mt-0.5 text-xs text-muted-foreground">
+                <h2 className="font-heading text-xl font-bold">{user?.name || state.name}</h2>
+                {user ? (
+                  <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-ce/10 px-2 py-0.5 text-[10px] font-semibold text-ce ring-1 ring-inset ring-ce/30">
+                      {user.provider === 'google' ? 'Google Account' : 'Email Account'}
+                    </span>
+                    <span className="text-xs text-muted-foreground">{user.email}</span>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={openAuthModal}
+                    className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-ce hover:underline"
+                  >
+                    <LogIn className="size-3" /> Connect Account (Google / Email)
+                  </button>
+                )}
+                <p className="mt-1 text-[11px] text-muted-foreground/70">
                   {state.joinDate}
                 </p>
               </div>
@@ -381,8 +447,12 @@ export function ProfileScreen() {
                   Unlock unlimited mission generation, advanced stat analytics,
                   exclusive domain techniques, and priority access to new features.
                 </p>
-                <SorcererButton className="mt-4 w-full" icon={Sparkles}>
-                  Ascend to Special Grade
+                <SorcererButton
+                  onClick={() => setActiveModal('specialGrade')}
+                  className="mt-4 w-full"
+                  icon={Sparkles}
+                >
+                  {state.grade === 4 || state.isSpecialGrade ? 'Manage Special Grade' : 'Ascend to Special Grade'}
                 </SorcererButton>
               </div>
             </div>
@@ -403,7 +473,7 @@ export function ProfileScreen() {
               action={
                 <Toggle
                   checked={notifications}
-                  onChange={setNotifications}
+                  onChange={handleToggleNotifications}
                   label="Toggle notifications"
                 />
               }
@@ -414,8 +484,8 @@ export function ProfileScreen() {
               sublabel={units === 'metric' ? 'Metric (kg, cm)' : 'Imperial (lbs, in)'}
               action={
                 <button
-                  onClick={() => setUnits((u) => (u === 'metric' ? 'imperial' : 'metric'))}
-                  className="rounded-full bg-surface-2 px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+                  onClick={handleToggleUnits}
+                  className="rounded-full bg-surface-2 px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-surface-2/80"
                 >
                   {units === 'metric' ? 'Metric' : 'Imperial'}
                 </button>
@@ -425,12 +495,13 @@ export function ProfileScreen() {
               icon={Smartphone}
               label="Integrations"
               sublabel="Connect health apps"
-              onClick={() => {}}
+              onClick={() => setActiveModal('integrations')}
             />
             <SettingsRow
               icon={Moon}
               label="Appearance"
-              sublabel="Dark mode (always on)"
+              sublabel="Dark mode & theme preset"
+              onClick={() => setActiveModal('appearance')}
             />
           </Panel>
         </section>
@@ -439,28 +510,60 @@ export function ProfileScreen() {
         <section>
           <SectionTitle>Account</SectionTitle>
           <Panel className="divide-y divide-border overflow-hidden">
+            {user ? (
+              <SettingsRow
+                icon={Mail}
+                label="Connected Account"
+                sublabel={`${user.email} (${user.provider === 'google' ? 'Google' : 'Email'})`}
+                action={
+                  <span className="rounded-md bg-jade/10 px-2 py-0.5 text-[10px] font-semibold text-jade ring-1 ring-inset ring-jade/30">
+                    Connected
+                  </span>
+                }
+              />
+            ) : (
+              <SettingsRow
+                icon={LogIn}
+                label="Sign In / Register"
+                sublabel="Google or Email authentication"
+                onClick={openAuthModal}
+              />
+            )}
             <SettingsRow
               icon={User}
               label="Edit Profile"
               sublabel="Name, aura, and fitness goal"
-              onClick={() => {}}
+              onClick={() => setActiveModal('editProfile')}
             />
             <SettingsRow
               icon={Shield}
               label="Privacy Policy"
-              onClick={() => {}}
+              onClick={() => setActiveModal('privacy')}
             />
             <SettingsRow
               icon={Globe}
               label="Terms of Service"
-              onClick={() => {}}
+              onClick={() => setActiveModal('terms')}
             />
-            <SettingsRow
-              icon={LogOut}
-              label="Sign Out"
-              tone="danger"
-              onClick={() => {}}
-            />
+            {user ? (
+              <SettingsRow
+                icon={LogOut}
+                label="Sign Out"
+                sublabel={`Signed in as ${user.name}`}
+                tone="danger"
+                onClick={async () => {
+                  await logout()
+                  showToast('Signed out successfully')
+                }}
+              />
+            ) : (
+              <SettingsRow
+                icon={LogOut}
+                label="Reset Progress"
+                tone="danger"
+                onClick={() => setActiveModal('signOut')}
+              />
+            )}
           </Panel>
         </section>
 
@@ -474,6 +577,48 @@ export function ProfileScreen() {
           </p>
         </div>
       </div>
+
+      {/* Render Active Modals */}
+      <SpecialGradeModal
+        isOpen={activeModal === 'specialGrade'}
+        onClose={() => setActiveModal(null)}
+        onSuccess={() => {
+          showToast('Ascended to Special Grade Sorcerer!')
+        }}
+      />
+
+      <EditProfileModal
+        isOpen={activeModal === 'editProfile'}
+        onClose={() => setActiveModal(null)}
+        onSuccess={(msg) => showToast(msg)}
+      />
+
+      <IntegrationsModal
+        isOpen={activeModal === 'integrations'}
+        onClose={() => setActiveModal(null)}
+        onSuccess={(msg) => showToast(msg)}
+      />
+
+      <AppearanceModal
+        isOpen={activeModal === 'appearance'}
+        onClose={() => setActiveModal(null)}
+        onSuccess={(msg) => showToast(msg)}
+      />
+
+      <PrivacyPolicyModal
+        isOpen={activeModal === 'privacy'}
+        onClose={() => setActiveModal(null)}
+      />
+
+      <TermsOfServiceModal
+        isOpen={activeModal === 'terms'}
+        onClose={() => setActiveModal(null)}
+      />
+
+      <SignOutModal
+        isOpen={activeModal === 'signOut'}
+        onClose={() => setActiveModal(null)}
+      />
     </div>
   )
 }

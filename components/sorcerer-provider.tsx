@@ -69,6 +69,10 @@ export interface SorcererState {
   activityLevel: string
   fitnessLevel: string
   reminderEnabled: boolean
+  units?: 'metric' | 'imperial'
+  theme?: string
+  integrations?: Record<string, boolean>
+  isSpecialGrade?: boolean
 }
 
 interface CompleteResult {
@@ -90,6 +94,8 @@ interface Ctx {
   finishMission: (id: string) => CompleteResult
   closeFlow: () => void
   goToComplete: (id: string) => void
+  updateState: (updates: Partial<SorcererState>) => void
+  signOut: () => void
   completeProfile: (p: {
     name: string
     aura: AuraKey
@@ -420,6 +426,42 @@ export function SorcererProvider({ children }: { children: ReactNode }) {
       .catch((err) => console.error('Failed to save profile to backend:', err))
   }, [state])
 
+  const updateState = useCallback((updates: Partial<SorcererState>) => {
+    setState((prev) => {
+      const next = { ...prev, ...updates }
+      try {
+        localStorage.setItem('sorcerer_state_v1', JSON.stringify(next))
+      } catch {}
+      return next
+    })
+
+    fetch('/api/sorcerer/state', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ updates }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.state) {
+          setState(data.state)
+        }
+      })
+      .catch((err) => console.error('Failed to save state to backend:', err))
+  }, [])
+
+  const signOut = useCallback(() => {
+    try {
+      localStorage.removeItem('sorcerer_state_v1')
+    } catch {}
+    const signedOutState: SorcererState = {
+      ...INITIAL,
+      onboarded: false,
+      name: 'Guest Sorcerer',
+    }
+    setState(signedOutState)
+    setTab('home')
+  }, [])
+
   const xpToNext = useMemo(() => xpForLevel(state.level), [state.level])
 
   const value = useMemo<Ctx>(
@@ -433,6 +475,8 @@ export function SorcererProvider({ children }: { children: ReactNode }) {
       finishMission,
       closeFlow,
       goToComplete,
+      updateState,
+      signOut,
       completeProfile,
       getMission,
       lastResult,
@@ -447,6 +491,8 @@ export function SorcererProvider({ children }: { children: ReactNode }) {
       finishMission,
       closeFlow,
       goToComplete,
+      updateState,
+      signOut,
       completeProfile,
       getMission,
       lastResult,

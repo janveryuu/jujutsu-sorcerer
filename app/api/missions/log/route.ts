@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { cookies } from 'next/headers'
 import {
   MISSIONS,
   TECHNIQUES,
@@ -8,6 +9,7 @@ import {
   type Mission,
 } from '@/lib/sorcerer-data'
 import { SorcererStore } from '@/lib/backend/store'
+import { userStore } from '@/lib/auth'
 import type { SorcererState } from '@/components/sorcerer-provider'
 
 const GRADE_LABELS = [
@@ -40,10 +42,28 @@ function checkServerUnlocks(s: SorcererState): string[] {
   return gained
 }
 
+async function getAuthUserId(): Promise<string> {
+  try {
+    const cookieStore = await cookies()
+    const token = cookieStore.get('sorcerer_auth_token')?.value
+    if (token) {
+      const user = userStore.getSession(token)
+      if (user) return user.id
+    }
+  } catch (err) {
+    console.error('Error reading auth session:', err)
+  }
+  return 'default'
+}
+
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-    const { userId = 'default', missionId, customMission } = body
+    let { userId, missionId, customMission } = body
+
+    if (!userId || userId === 'default') {
+      userId = await getAuthUserId()
+    }
 
     if (!missionId && !customMission) {
       return NextResponse.json(

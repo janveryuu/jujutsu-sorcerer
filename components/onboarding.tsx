@@ -61,6 +61,7 @@ import {
 import { CursedEnergyBg } from './cursed-energy-bg'
 import { SorcererButton, GradeChip, EnergyBar } from './sorcerer-ui'
 import { useSorcerer } from './sorcerer-provider'
+import { useAuth } from './auth-provider'
 import {
   AURAS,
   GOALS,
@@ -196,20 +197,23 @@ const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 
 
 const WARNING_SLIDES = [
   {
-    title: 'Cursed Energy Decay',
-    desc: 'Your untapped energy potential fades with each inactive day.',
+    title: 'Fitness Decline',
+    desc: 'Your fitness potential declines with every day you skip training.',
+    image: '/crazy-gojo-z.png',
     icon: '☁️',
     color: 'from-crimson/20',
   },
   {
-    title: 'Vessel Deterioration',
-    desc: 'A neglected vessel silently weakens, inviting curses within.',
+    title: 'Body Neglect',
+    desc: 'A neglected body silently weakens, making you more prone to injury and illness.',
+    image: '/body-neglect.png',
     icon: '💔',
     color: 'from-crimson/20',
   },
   {
-    title: 'Spirit Erosion',
-    desc: 'Stagnation breeds doubt and anxiety in the sorcerer\'s mind.',
+    title: 'Motivation Decline',
+    desc: 'Inactivity chips away at your motivation and confidence over time.',
+    image: '/motivation-decline.png',
     icon: '🌀',
     color: 'from-ce/20',
   },
@@ -428,6 +432,7 @@ export function Onboarding() {
    STEP 0 — HERO SPLASH
    =================================================================== */
 function HeroSplash({ onNext }: { onNext: () => void }) {
+  const { openAuthModal, user } = useAuth()
   return (
     <motion.section
       key="hero"
@@ -484,7 +489,7 @@ function HeroSplash({ onNext }: { onNext: () => void }) {
         </motion.p>
 
         <motion.div
-          className="mt-10 w-full"
+          className="mt-8 w-full space-y-3"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
@@ -492,6 +497,17 @@ function HeroSplash({ onNext }: { onNext: () => void }) {
           <SorcererButton className="w-full" icon={ChevronRight} onClick={onNext}>
             Get Started
           </SorcererButton>
+          <button
+            type="button"
+            onClick={openAuthModal}
+            className="flex w-full items-center justify-center gap-2 rounded-xl border border-border/80 bg-surface/70 py-3 text-xs font-semibold text-foreground backdrop-blur-md transition-all hover:bg-surface hover:border-ce/50"
+          >
+            {user ? (
+              <span className="text-ce font-bold">Signed in as {user.name} ({user.provider === 'google' ? 'Google' : 'Email'})</span>
+            ) : (
+              <span>Sign In with Google / Email</span>
+            )}
+          </button>
         </motion.div>
       </div>
     </motion.section>
@@ -1852,7 +1868,17 @@ function WarningCarousel({ slide, setSlide, onDone }: { slide: number; setSlide:
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 0.2 }}
       >
-        <span className="text-7xl mb-6 drop-shadow-md">{current.icon}</span>
+        {current.image ? (
+          <div className="relative mb-6 size-32 md:size-36 flex items-center justify-center">
+            <img
+              src={current.image}
+              alt={current.title}
+              className="w-full h-full object-contain select-none filter drop-shadow-[0_0_20px_rgba(255,255,255,0.6)] drop-shadow-[0_8px_30px_rgba(0,0,0,0.8)]"
+            />
+          </div>
+        ) : (
+          <span className="text-7xl mb-6 drop-shadow-md">{current.icon}</span>
+        )}
         <h2 className="font-heading text-2xl font-bold mb-3 text-white tracking-wide">{current.title}</h2>
         <p className="text-sm text-white/85 max-w-[28ch] leading-relaxed font-sans">{current.desc}</p>
       </motion.div>
@@ -2946,22 +2972,22 @@ function ScrollPicker({
         startDrag(e.clientY)
       }}
     >
-      {/* top fade mask */}
+      {/* top fade mask - fully transparent gradient */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-[80px]"
-        style={{ background: 'linear-gradient(to bottom, var(--background) 0%, transparent 100%)' }} />
-      {/* bottom fade mask */}
+        style={{ background: 'linear-gradient(to bottom, rgba(9, 13, 18, 0.4) 0%, transparent 100%)' }} />
+      {/* bottom fade mask - fully transparent gradient */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[80px]"
-        style={{ background: 'linear-gradient(to top, var(--background) 0%, transparent 100%)' }} />
+        style={{ background: 'linear-gradient(to top, rgba(9, 13, 18, 0.4) 0%, transparent 100%)' }} />
 
-      {/* selection highlight rail */}
+      {/* selection highlight rail - seamless transparent glow */}
       <div
-        className="pointer-events-none absolute inset-x-2 z-20 rounded-2xl"
+        className="pointer-events-none absolute inset-x-2 z-20 rounded-full"
         style={{
           top: CENTER * ITEM_H + 2,
           height: ITEM_H - 4,
-          background: 'rgba(0, 240, 255, 0.12)',
-          border: '1.5px solid rgba(0, 240, 255, 0.60)',
-          boxShadow: '0 0 20px rgba(0, 240, 255, 0.35), inset 0 1px 0 rgba(255,255,255,0.10)',
+          background: 'rgba(0, 240, 255, 0.05)',
+          border: '1px solid rgba(0, 240, 255, 0.2)',
+          boxShadow: '0 0 25px rgba(0, 240, 255, 0.25)',
         }}
       />
 

@@ -1,0 +1,48 @@
+[
+  {
+    "id": "user_demo_01",
+    "email": "sorcerer@jujutsu.ac",
+    "name": "Satoru Gojo",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
+    "provider": "email",
+    "emailVerified": true,
+    "createdAt": "2026-07-25T12:43:43.743Z",
+    "passwordHash": "sorcerer123"
+  },
+  {
+    "id": "user_1784983430783_9j1v5w",
+    "email": "sorcerer.google.716@gmail.com",
+    "name": "Gojo Satoru (Google)",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
+    "provider": "google",
+    "emailVerified": true,
+    "createdAt": "2026-07-25T12:43:50.783Z"
+  },
+  {
+    "id": "user_1784983749876_8k0et1",
+    "email": "sorcerer.google.837@gmail.com",
+    "name": "Satoru Gojo (Google)",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
+    "provider": "google",
+    "emailVerified": true,
+    "createdAt": "2026-07-25T12:49:09.876Z"
+  },
+  {
+    "id": "user_1784983753478_o5t4js",
+    "email": "sorcerer.google.216@gmail.com",
+    "name": "Satoru Gojo (Google)",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
+    "provider": "google",
+    "emailVerified": true,
+    "createdAt": "2026-07-25T12:49:13.478Z"
+  },
+  {
+    "id": "user_1784983755504_45l4t0",
+    "email": "sorcerer.google.461@gmail.com",
+    "name": "Satoru Gojo (Google)",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
+    "provider": "google",
+    "emailVerified": true,
+    "createdAt": "2026-07-25T12:49:15.504Z"
+  }
+]
