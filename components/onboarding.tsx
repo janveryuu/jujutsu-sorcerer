@@ -2493,7 +2493,7 @@ function LockIn({ onDone }: { onDone: () => void }) {
    STEP 20 — TYPEWRITER REVEAL
    =================================================================== */
 function TypewriterReveal({ onDone }: { onDone: () => void }) {
-  const text = 'Your path through the cursed realm begins now. Rise, Sorcerer.'
+  const text = 'Every grade starts at zero. Begin.'
   const [displayed, setDisplayed] = useState('')
   const [done, setDone] = useState(false)
 
@@ -2527,7 +2527,7 @@ function TypewriterReveal({ onDone }: { onDone: () => void }) {
       {/* Ambient glow */}
       <div className="absolute top-1/3 right-0 w-64 h-64 rounded-full bg-ce/5 blur-3xl" />
 
-      <motion.p className="font-heading text-2xl font-bold leading-relaxed text-foreground">
+      <motion.p className="font-heading text-2xl font-bold leading-relaxed text-foreground text-center uppercase tracking-wide">
         {displayed}
         {!done && <span className="inline-block w-0.5 h-6 bg-foreground ml-1 animate-cursor-blink" />}
       </motion.p>
