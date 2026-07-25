@@ -17,7 +17,7 @@ export interface AISenseiRequest {
 }
 
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions'
-const DEFAULT_MODEL = 'llama-3.3-70b-versatile'
+const DEFAULT_MODEL = 'llama-3.1-8b-instant'
 
 /**
  * Generates a customized Jujutsu Exorcism Mission using Groq Llama 3 API.
@@ -127,10 +127,10 @@ export async function askJujutsuSensei(req: AISenseiRequest): Promise<string> {
     return `[Sensei Llama-3 Simulation]: Focus on refining your technique first, Sorcerer ${req.sorcererName}. At ${req.gradeLabel}, consistency in form generates far more Cursed Output than reckless speed. Keep your shoulders packed and breathe steadily through every repetition.`
   }
 
-  const prompt = `You are a legendary Special Grade Jujutsu Mentor speaking to student "${req.sorcererName}" (${req.gradeLabel}, Level ${req.level}).
-Answer their question with practical, evidence-based fitness advice framed in Jujutsu Sorcerer terminology (vessel discipline, cursed energy output, binding vows). Keep your response concise (3-4 impactful sentences).
+  const prompt = `You are a legendary Special Grade Jujutsu Mentor speaking to your student "${req.sorcererName}" (${req.gradeLabel}, Level ${req.level}).
+Respond directly and naturally to their message. If they just say hello, greet them back in character. If they ask for fitness advice, provide practical, evidence-based fitness advice framed in Jujutsu Sorcerer terminology (vessel discipline, cursed energy output, binding vows). Be conversational, sharp, and mentor-like. Keep your response concise (2-4 impactful sentences).
 
-Question: "${req.question}"`
+Student's message: "${req.question}"`
 
   try {
     const res = await fetch(GROQ_API_URL, {
