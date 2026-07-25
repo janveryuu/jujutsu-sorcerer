@@ -44,6 +44,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Fetch session on load
   useEffect(() => {
+    // If returning from a successful OAuth redirect, clear local storage to prevent old guest state hydration
+    if (typeof window !== 'undefined' && window.location.search.includes('auth_success=1')) {
+      try {
+        localStorage.removeItem('sorcerer_state_v1')
+        // Clean up URL without triggering a reload
+        const url = new URL(window.location.href)
+        url.searchParams.delete('auth_success')
+        window.history.replaceState({}, document.title, url.toString())
+      } catch (e) {
+        console.error('Error clearing local storage on auth success', e)
+      }
+    }
+
     fetch('/api/auth/session')
       .then((res) => res.json())
       .then((data) => {

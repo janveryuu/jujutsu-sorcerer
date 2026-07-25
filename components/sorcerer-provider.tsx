@@ -197,11 +197,17 @@ export function SorcererProvider({ children }: { children: ReactNode }) {
   // Hydrate from localStorage first for immediate UI response, then sync from backend
   useEffect(() => {
     try {
-      const cached = localStorage.getItem('sorcerer_state_v1')
-      if (cached) {
-        const parsed = JSON.parse(cached)
-        if (parsed && typeof parsed === 'object') {
-          setState((prev) => ({ ...prev, ...parsed }))
+      // If returning from a successful OAuth redirect, SKIP local storage hydration
+      // This prevents the UI from flashing the old guest dashboard while we fetch the fresh user state.
+      const isAuthSuccess = typeof window !== 'undefined' && window.location.search.includes('auth_success=1')
+      
+      if (!isAuthSuccess) {
+        const cached = localStorage.getItem('sorcerer_state_v1')
+        if (cached) {
+          const parsed = JSON.parse(cached)
+          if (parsed && typeof parsed === 'object') {
+            setState((prev) => ({ ...prev, ...parsed }))
+          }
         }
       }
     } catch {

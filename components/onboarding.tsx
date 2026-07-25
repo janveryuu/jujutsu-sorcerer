@@ -250,10 +250,26 @@ const transition = { duration: 0.45, ease: [0.22, 1, 0.36, 1] as const }
 
 export function Onboarding() {
   const { completeProfile } = useSorcerer()
+  const { status, user } = useAuth()
   const [step, setStep] = useState(0)
+
+  // Automatically advance to System Notification if logged in
+  useEffect(() => {
+    if (step === 0 && status === 'authenticated' && user) {
+      setStep(1)
+    }
+  }, [step, status, user])
 
   // All onboarding state
   const [name, setName] = useState('')
+
+  // Pre-fill name from Google/Email account if available
+  useEffect(() => {
+    if (user?.name && !name) {
+      setName(user.name)
+    }
+  }, [user, name])
+
   const [gender, setGender] = useState('')
   const [aura, setAura] = useState<AuraKey>('violet')
   const [goal, setGoal] = useState<GoalKey>('general')
@@ -432,7 +448,17 @@ export function Onboarding() {
    STEP 0 — HERO SPLASH
    =================================================================== */
 function HeroSplash({ onNext }: { onNext: () => void }) {
-  const { openAuthModal, user } = useAuth()
+  const { openAuthModal, user, status } = useAuth()
+
+  useEffect(() => {
+    if (status === 'authenticated' && user) {
+      const timer = setTimeout(() => {
+        onNext()
+      }, 500)
+      return () => clearTimeout(timer)
+    }
+  }, [user, status, onNext])
+
   return (
     <motion.section
       key="hero"
@@ -494,20 +520,15 @@ function HeroSplash({ onNext }: { onNext: () => void }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
         >
-          <SorcererButton className="w-full" icon={ChevronRight} onClick={onNext}>
-            Get Started
-          </SorcererButton>
-          <button
-            type="button"
-            onClick={openAuthModal}
-            className="flex w-full items-center justify-center gap-2 rounded-xl border border-border/80 bg-surface/70 py-3 text-xs font-semibold text-foreground backdrop-blur-md transition-all hover:bg-surface hover:border-ce/50"
-          >
-            {user ? (
-              <span className="text-ce font-bold">Signed in as {user.name} ({user.provider === 'google' ? 'Google' : 'Email'})</span>
-            ) : (
-              <span>Sign In with Google / Email</span>
-            )}
-          </button>
+          {status === 'loading' || status === 'authenticated' ? (
+            <div className="flex w-full items-center justify-center py-3">
+              <Sparkles className="size-5 text-ce animate-pulse" />
+            </div>
+          ) : (
+            <SorcererButton className="w-full" icon={ChevronRight} onClick={openAuthModal}>
+              Sign In to Begin
+            </SorcererButton>
+          )}
         </motion.div>
       </div>
     </motion.section>
