@@ -111,6 +111,7 @@
     @apply font-sans;
     background-color: var(--background);
     -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
   }
   body {
     @apply bg-background text-foreground;

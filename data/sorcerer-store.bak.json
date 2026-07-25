@@ -1,0 +1,211 @@
+{
+  "profiles": {
+    "default": {
+      "onboarded": true,
+      "name": "Janver",
+      "aura": "violet",
+      "goal": "general",
+      "level": 1,
+      "xp": 40,
+      "ce": 120,
+      "streak": 0,
+      "grade": 2,
+      "stats": {
+        "strength": 46,
+        "stamina": 46,
+        "agility": 46,
+        "endurance": 46,
+        "willpower": 64,
+        "technique": 42
+      },
+      "workoutsLogged": 0,
+      "conditioningLogged": 0,
+      "joinDate": "Awakened today",
+      "totalCe": 120,
+      "longestStreak": 0,
+      "unlocked": [],
+      "weekly": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "body": [
+        {
+          "date": "Wk 1",
+          "weight": 82.5
+        },
+        {
+          "date": "Wk 2",
+          "weight": 81.8
+        },
+        {
+          "date": "Wk 3",
+          "weight": 81.1
+        },
+        {
+          "date": "Wk 4",
+          "weight": 80.4
+        },
+        {
+          "date": "Wk 5",
+          "weight": 79.9
+        },
+        {
+          "date": "Wk 6",
+          "weight": 79.2
+        }
+      ],
+      "completedMissionIds": [],
+      "gender": "male",
+      "heightCm": 180,
+      "weightKg": 70,
+      "equipmentList": [
+        "full-gym"
+      ],
+      "workoutDays": [
+        "Monday",
+        "Wednesday",
+        "Friday"
+      ],
+      "motivations": [
+        "strength"
+      ],
+      "focusAreas": [
+        "full-body"
+      ],
+      "activityLevel": "active",
+      "fitnessLevel": "advanced",
+      "reminderEnabled": true
+    }
+  },
+  "customMissions": {
+    "default": []
+  },
+  "leaderboard": [
+    {
+      "id": "ai-gojo",
+      "name": "Satoru Gojo",
+      "gradeLabel": "Special Grade",
+      "gradeIndex": 4,
+      "totalCe": 999999,
+      "level": 99,
+      "aura": "violet",
+      "isAI": true,
+      "tagline": "Throughout Heaven and Earth, I alone am the honored one."
+    },
+    {
+      "id": "ai-sukuna",
+      "name": "Ryomen Sukuna",
+      "gradeLabel": "Special Grade",
+      "gradeIndex": 4,
+      "totalCe": 950000,
+      "level": 99,
+      "aura": "crimson",
+      "isAI": true,
+      "tagline": "Know your place, fool."
+    },
+    {
+      "id": "ai-yuta",
+      "name": "Yuta Okkotsu",
+      "gradeLabel": "Special Grade",
+      "gradeIndex": 4,
+      "totalCe": 420000,
+      "level": 84,
+      "aura": "jade",
+      "isAI": true,
+      "tagline": "I won't let my friends die again."
+    },
+    {
+      "id": "ai-maki",
+      "name": "Maki Zen'in",
+      "gradeLabel": "Special Grade",
+      "gradeIndex": 4,
+      "totalCe": 380000,
+      "level": 78,
+      "aura": "crimson",
+      "isAI": true,
+      "tagline": "I left everything behind."
+    },
+    {
+      "id": "ai-hakari",
+      "name": "Kinji Hakari",
+      "gradeLabel": "Grade 1",
+      "gradeIndex": 3,
+      "totalCe": 210000,
+      "level": 65,
+      "aura": "gold",
+      "isAI": true,
+      "tagline": "Always bet on Hakari."
+    },
+    {
+      "id": "ai-todo",
+      "name": "Aoi Todo",
+      "gradeLabel": "Grade 1",
+      "gradeIndex": 3,
+      "totalCe": 185000,
+      "level": 62,
+      "aura": "gold",
+      "isAI": true,
+      "tagline": "What kind of woman is your type?"
+    },
+    {
+      "id": "ai-nanami",
+      "name": "Kento Nanami",
+      "gradeLabel": "Grade 1",
+      "gradeIndex": 3,
+      "totalCe": 160000,
+      "level": 58,
+      "aura": "jade",
+      "isAI": true,
+      "tagline": "Overtime starts now."
+    },
+    {
+      "id": "ai-yuji",
+      "name": "Yuji Itadori",
+      "gradeLabel": "Grade 1",
+      "gradeIndex": 3,
+      "totalCe": 125000,
+      "level": 50,
+      "aura": "crimson",
+      "isAI": true,
+      "tagline": "I won't lose. Not until I die surrounded by others."
+    },
+    {
+      "id": "ai-megumi",
+      "name": "Megumi Fushiguro",
+      "gradeLabel": "Grade 2",
+      "gradeIndex": 2,
+      "totalCe": 92000,
+      "level": 45,
+      "aura": "violet",
+      "isAI": true,
+      "tagline": "With this treasure I summon..."
+    },
+    {
+      "id": "ai-nobara",
+      "name": "Nobara Kugisaki",
+      "gradeLabel": "Grade 3",
+      "gradeIndex": 1,
+      "totalCe": 54000,
+      "level": 32,
+      "aura": "crimson",
+      "isAI": true,
+      "tagline": "I love myself when I'm pretty and when I'm strong!"
+    },
+    {
+      "id": "user-sorcerer",
+      "name": "Sorcerer",
+      "gradeLabel": "Grade 3",
+      "gradeIndex": 1,
+      "totalCe": 18480,
+      "level": 7,
+      "aura": "violet",
+      "isAI": false,
+      "tagline": "Awakened Sorcerer · 24 exorcisms completed"
+    }
+  ]
+}

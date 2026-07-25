@@ -28,6 +28,34 @@ export const metadata: Metadata = {
   description:
     'A gamified fitness companion that turns real workouts into exorcism missions. Gain cursed energy, rise through the grades, and unlock domain techniques.',
   generator: 'v0.app',
+  manifest: '/manifest.json',
+  openGraph: {
+    title: 'JUJUTSU — Awaken Your Cursed Energy',
+    description: 'A gamified fitness companion that turns real workouts into exorcism missions.',
+    url: 'https://jujutsu-fitness.vercel.app',
+    siteName: 'JUJUTSU Fitness',
+    images: [
+      {
+        url: '/jujutsu-hero-bg.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'JUJUTSU Fitness Preview',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'JUJUTSU — Awaken Your Cursed Energy',
+    description: 'A gamified fitness companion that turns real workouts into exorcism missions.',
+    images: ['/jujutsu-hero-bg.jpg'],
+  },
+  appleWebApp: {
+    title: 'JUJUTSU',
+    statusBarStyle: 'black-translucent',
+    capable: true,
+  },
 }
 
 export const viewport: Viewport = {
@@ -37,6 +65,7 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
+  viewportFit: 'cover',
 }
 
 export default function RootLayout({
