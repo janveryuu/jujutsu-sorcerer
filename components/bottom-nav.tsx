@@ -27,6 +27,7 @@ export function BottomNav() {
           return (
             <li key={item.key} className="flex-1">
               <button
+                id={`tutorial-nav-${item.key}`}
                 onClick={() => setTab(item.key)}
                 aria-current={active ? 'page' : undefined}
                 className={cn(

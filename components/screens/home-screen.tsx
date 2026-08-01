@@ -37,7 +37,7 @@ export function HomeScreen() {
       <CursedEnergyBg density={18} className="opacity-70" />
       <div className="relative space-y-7 px-5 pb-8 pt-6">
         {/* Header */}
-        <header className="flex items-center justify-between">
+        <header id="tutorial-header" className="flex items-center justify-between">
           <div>
             <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
               Jujutsu Sorcerer
@@ -47,11 +47,11 @@ export function HomeScreen() {
             </h1>
           </div>
           <div className="flex items-center gap-2">
-            <span className="flex items-center gap-1 rounded-full border border-border bg-surface px-3 py-1.5 font-mono text-sm font-bold text-ce">
+            <span id="tutorial-ce" className="flex items-center gap-1 rounded-full border border-border bg-surface px-3 py-1.5 font-mono text-sm font-bold text-ce">
               <Zap className="size-4" fill="currentColor" strokeWidth={0} />
               {state.ce.toLocaleString()}
             </span>
-            <span className="flex items-center gap-1.5 rounded-full border border-border bg-surface px-3 py-1.5 font-mono text-sm text-gold">
+            <span id="tutorial-streak" className="flex items-center gap-1.5 rounded-full border border-border bg-surface px-3 py-1.5 font-mono text-sm text-gold">
               <Flame className="size-4" />
               {state.streak}d
             </span>
@@ -59,7 +59,7 @@ export function HomeScreen() {
         </header>
 
         {/* Status Ring */}
-        <div className="flex flex-col items-center">
+        <div id="tutorial-status-ring" className="flex flex-col items-center">
           <StatusRing progress={dailyPct}>
             <span className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
               Level
@@ -72,7 +72,7 @@ export function HomeScreen() {
             </span>
           </StatusRing>
 
-          <div className="mt-5 w-full max-w-xs">
+          <div id="tutorial-xp-bar" className="mt-5 w-full max-w-xs">
             <div className="mb-1.5 flex items-center justify-between text-xs">
               <span className="font-mono text-muted-foreground">XP</span>
               <span className="font-mono text-muted-foreground">
@@ -85,6 +85,7 @@ export function HomeScreen() {
 
         {/* AI Mission Forge Card */}
         <motion.div
+          id="tutorial-ai-forge"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           onClick={() => setAiModalOpen(true)}
@@ -112,6 +113,7 @@ export function HomeScreen() {
 
         {/* Global Cursed Rankings Preview Banner on Home Screen */}
         <motion.div
+          id="tutorial-rankings"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           onClick={() => setTab('status')}
@@ -144,7 +146,7 @@ export function HomeScreen() {
         </motion.div>
 
         {/* Today's missions rail */}
-        <section>
+        <section id="tutorial-missions-rail">
           <SectionTitle
             action={
               <button

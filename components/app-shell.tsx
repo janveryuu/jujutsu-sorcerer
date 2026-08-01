@@ -12,10 +12,15 @@ import { StatusScreen } from './screens/status-screen'
 import { DomainScreen } from './screens/domain-screen'
 import { ProfileScreen } from './screens/profile-screen'
 import { WorkoutFlow } from './workout-flow'
+import { GojoTutorial } from './gojo-tutorial'
 
 export function AppShell() {
-  const { state, tab, flow } = useSorcerer()
+  const { state, tab, flow, markTutorialSeen } = useSorcerer()
   const [rankUp, setRankUp] = useState<string | null>(null)
+  const [replayTutorial, setReplayTutorial] = useState(false)
+
+  // Show tutorial if first time OR explicitly replayed
+  const showTutorial = state.onboarded && (!state.tutorialSeen || replayTutorial)
 
   if (!state.onboarded) {
     return <Onboarding />
@@ -26,7 +31,7 @@ export function AppShell() {
     missions: <MissionsScreen />,
     status: <StatusScreen />,
     domain: <DomainScreen />,
-    profile: <ProfileScreen />,
+    profile: <ProfileScreen onReplayTutorial={() => { markTutorialSeen(); setReplayTutorial(true) }} />,
   }
 
   return (
@@ -56,6 +61,15 @@ export function AppShell() {
         open={rankUp !== null}
         gradeLabel={rankUp ?? ''}
         onClose={() => setRankUp(null)}
+      />
+
+      {/* Gojo Tutorial Overlay */}
+      <GojoTutorial
+        show={showTutorial}
+        onComplete={() => {
+          markTutorialSeen()
+          setReplayTutorial(false)
+        }}
       />
     </div>
   )

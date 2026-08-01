@@ -1,4 +1,3 @@
-// SORCERER — core data model, terminology config, and seed content.
 // Terminology is kept as a swappable config so the whole app can be
 // re-themed (e.g. a different anime-style skin) by editing this object.
 

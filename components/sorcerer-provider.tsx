@@ -73,6 +73,7 @@ export interface SorcererState {
   theme?: string
   integrations?: Record<string, boolean>
   isSpecialGrade?: boolean
+  tutorialSeen?: boolean
 }
 
 interface CompleteResult {
@@ -96,6 +97,7 @@ interface Ctx {
   goToComplete: (id: string) => void
   updateState: (updates: Partial<SorcererState>) => void
   signOut: () => void
+  markTutorialSeen: () => void
   completeProfile: (p: {
     name: string
     aura: AuraKey
@@ -164,6 +166,7 @@ const INITIAL: SorcererState = {
   activityLevel: '',
   fitnessLevel: '',
   reminderEnabled: true,
+  tutorialSeen: false,
 }
 
 function checkUnlocks(s: SorcererState): string[] {
@@ -455,6 +458,16 @@ export function SorcererProvider({ children }: { children: ReactNode }) {
       .catch((err) => console.error('Failed to save state to backend:', err))
   }, [])
 
+  const markTutorialSeen = useCallback(() => {
+    setState((prev) => {
+      const next = { ...prev, tutorialSeen: true }
+      try {
+        localStorage.setItem('sorcerer_state_v1', JSON.stringify(next))
+      } catch {}
+      return next
+    })
+  }, [])
+
   const signOut = useCallback(() => {
     try {
       localStorage.removeItem('sorcerer_state_v1')
@@ -483,6 +496,7 @@ export function SorcererProvider({ children }: { children: ReactNode }) {
       goToComplete,
       updateState,
       signOut,
+      markTutorialSeen,
       completeProfile,
       getMission,
       lastResult,
@@ -499,6 +513,7 @@ export function SorcererProvider({ children }: { children: ReactNode }) {
       goToComplete,
       updateState,
       signOut,
+      markTutorialSeen,
       completeProfile,
       getMission,
       lastResult,

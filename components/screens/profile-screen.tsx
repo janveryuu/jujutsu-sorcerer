@@ -57,6 +57,7 @@ import {
   SignOutModal,
   ToastNotification,
 } from '@/components/profile-modals'
+import { GojoTutorialReplayButton } from '@/components/gojo-tutorial'
 
 /* ------------------------------------------------------------------ */
 /* Toggle switch component                                             */
@@ -224,7 +225,7 @@ type ModalType =
 /* ------------------------------------------------------------------ */
 /* Main Profile Screen                                                 */
 /* ------------------------------------------------------------------ */
-export function ProfileScreen() {
+export function ProfileScreen({ onReplayTutorial }: { onReplayTutorial?: () => void }) {
   const { state, updateState } = useSorcerer()
   const { user, openAuthModal, logout } = useAuth()
   const grade = GRADES[state.grade]
@@ -503,6 +504,9 @@ export function ProfileScreen() {
               sublabel="Dark mode & theme preset"
               onClick={() => setActiveModal('appearance')}
             />
+            {onReplayTutorial && (
+              <GojoTutorialReplayButton onReplay={onReplayTutorial} />
+            )}
           </Panel>
         </section>
 

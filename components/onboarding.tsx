@@ -220,6 +220,7 @@ const WARNING_SLIDES = [
   {
     title: 'Time for Awakening',
     desc: 'Every sorcerer\'s journey begins with a single step. Take yours now.',
+    image: '/gojo-awakening.png',
     icon: '⏰',
     color: 'from-ce/20',
     positive: true,
@@ -1871,7 +1872,7 @@ function WarningCarousel({ slide, setSlide, onDone }: { slide: number; setSlide:
     <motion.section
       key={`warning-${slide}`}
       className={cn(
-        'relative z-10 flex flex-1 flex-col items-center justify-between px-6 py-12 h-full transition-colors duration-500 text-white',
+        'relative z-10 flex flex-1 flex-col items-center justify-between px-6 py-8 h-full transition-colors duration-500 text-white overflow-hidden',
         isPositive ? 'bg-[#04202c]' : 'bg-[#cc001b]'
       )}
       initial={{ opacity: 0, x: 50 }}
@@ -1890,11 +1891,15 @@ function WarningCarousel({ slide, setSlide, onDone }: { slide: number; setSlide:
         transition={{ delay: 0.2 }}
       >
         {current.image ? (
-          <div className="relative mb-6 size-32 md:size-36 flex items-center justify-center">
+          <div className="relative mb-3 flex items-center justify-center" style={{ width: '100%', maxWidth: 340, height: 300 }}>
             <img
               src={current.image}
               alt={current.title}
-              className="w-full h-full object-contain select-none filter drop-shadow-[0_0_20px_rgba(255,255,255,0.6)] drop-shadow-[0_8px_30px_rgba(0,0,0,0.8)]"
+              className={`w-full h-full object-contain select-none ${
+                current.positive
+                  ? 'filter drop-shadow-[0_0_40px_rgba(0,240,255,0.7)] drop-shadow-[0_0_80px_rgba(0,240,255,0.3)]'
+                  : 'filter drop-shadow-[0_0_24px_rgba(255,255,255,0.5)] drop-shadow-[0_8px_30px_rgba(0,0,0,0.8)]'
+              }`}
             />
           </div>
         ) : (
